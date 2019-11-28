@@ -45,5 +45,8 @@ public class Jugador {
         this.enJaque = enJaque;
     }
 
-    
+    public void rendirse() {
+        System.out.println(this.getColorPiezas() + " se ha rendido. FIN DE LA PARTIDA");
+        System.exit(0);
+    }    
 }
