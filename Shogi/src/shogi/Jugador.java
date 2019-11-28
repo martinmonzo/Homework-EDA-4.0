@@ -48,5 +48,10 @@ public class Jugador {
     public void rendirse() {
         System.out.println(this.getColorPiezas() + " se ha rendido. FIN DE LA PARTIDA");
         System.exit(0);
-    }    
+    }
+    
+    public void darJaqueMate() {
+        System.out.println(this.getColorPiezas() + " GANA POR JAQUE MATE.");
+        System.exit(0);
+    }
 }
