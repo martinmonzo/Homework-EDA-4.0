@@ -50,6 +50,34 @@ public class Jugador {
         System.exit(0);
     }
     
+    public boolean puedeDarJaqueMate() {
+        Jugador rival = (ParametrosPredefinidos.jugador1 == this) ?
+                ParametrosPredefinidos.jugador2 : ParametrosPredefinidos.jugador1;
+                
+        for(int i = 0; i < ParametrosPredefinidos.tablero.getCantidadFilas(); i++) {
+            for(int j = 0; j < ParametrosPredefinidos.tablero.getCantidadColumnas(); j++) {
+                Celda celda = ParametrosPredefinidos.tablero.getInstancia()[i][j];
+                if(celda.getPieza() != null && celda.getPieza().getJugador() == rival) {
+                    if(celda.getPieza().puedeMoverseAAlgunaCelda(celda)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        ArrayList<Captura> listaCapturas = (this == ParametrosPredefinidos.jugador1) ? 
+                ParametrosPredefinidos.listaCapturasJugador2 : ParametrosPredefinidos.listaCapturasJugador1;
+        
+        for(Captura captura : listaCapturas) {
+            Pieza pieza = captura.getPieza();
+            if(pieza.puedeReingresarAAlgunaCelda()) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public void darJaqueMate() {
         System.out.println(this.getColorPiezas() + " GANA POR JAQUE MATE.");
         System.exit(0);

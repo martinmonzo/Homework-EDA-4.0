@@ -46,6 +46,133 @@ public abstract class Pieza {
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
     }
-
     
+    public boolean puedeDarJaque(Celda desde) {
+        if(desde.getPieza() == this) {
+            Celda celdaReyRival = null;
+        
+            for (Celda[] instancia : ParametrosPredefinidos.tablero.getInstancia()) {
+                for (Celda instancia1 : instancia) {
+                    if (instancia1.getPieza() != null && instancia1.getPieza() instanceof Rey && instancia1.getPieza().getJugador() != this.getJugador()) {
+                        celdaReyRival = instancia1;
+                        break;
+                    }
+                }
+            }
+            
+            return this.puedeMoverse(desde, celdaReyRival, false);
+            /*if(this.puedeMoverse(desde, celdaReyRival)) {
+                celdaReyRival.getPieza().getJugador().setEnJaque(true);
+            };*/
+        }
+        
+        return false;
+    }
+
+    public void darJaque(Jugador jugador) {
+        jugador.setEnJaque(true);
+        System.out.println("\033[0;35m" + "¡JAQUE!" + "\033[0m");
+        
+        if(this.getJugador().puedeDarJaqueMate()) {
+            this.getJugador().darJaqueMate();
+        }
+    }
+    
+    public boolean puedeMoverse(Celda desde, Celda hasta, boolean checkearJaque) {
+        //valido si se sale de los limites del tablero
+        if(hasta.getFila() < 0 || hasta.getColumna() < 0 || hasta.getFila() > ParametrosPredefinidos.tablero.getCantidadFilas() || hasta.getColumna() > ParametrosPredefinidos.tablero.getCantidadColumnas()) {
+            return false;
+        }
+        
+        //valido si hay una pieza distinta en la celda desde, o si la celda está vacía
+        if(desde.getPieza() != this) {
+            return false;
+        }
+        
+        //valido si se mueve a una celda ocupada
+        if(hasta.getPieza() != null) {
+            if(hasta.getPieza().getJugador() == this.getJugador()) { //no puede moverse a donde ya tiene una pieza propia
+                return false;
+            }
+        }
+        
+        //valido si quedo en jaque
+        if(checkearJaque) {
+            Pieza piezaHasta = hasta.getPieza();
+            Pieza piezaDesde = desde.getPieza();
+            hasta.setPieza(this);
+            desde.setPieza(null);
+            
+            for (int i = 0; i < ParametrosPredefinidos.tablero.getCantidadFilas(); i++) {
+                for (int j = 0; j < ParametrosPredefinidos.tablero.getCantidadColumnas(); j++) {
+                    Celda celda = ParametrosPredefinidos.tablero.getInstancia()[i][j];
+                    if (celda.getPieza() != null && celda.getPieza().getJugador() != this.getJugador()) {
+                        if(celda.getPieza().puedeDarJaque(celda)) {
+                            hasta.setPieza(piezaHasta);
+                            desde.setPieza(piezaDesde);
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            hasta.setPieza(piezaHasta);
+            desde.setPieza(piezaDesde);
+        }
+        //se mueve a una celda vacía
+        return true;
+    }
+
+    public boolean puedeMoverseAAlgunaCelda(Celda desde) {
+        for (Celda[] instancia : ParametrosPredefinidos.tablero.getInstancia()) {
+            for (Celda celda : instancia) {
+                if(this.puedeMoverse(desde, celda, true)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean puedeReingresar(Celda reingreso) {
+        /* - Si la celda reingreso está ocupada, no puede
+         *   - Si la celda esta vacía, y la pieza no es un peón, puede
+         *   - Si está vacía y es un peón:
+         *        - Si hay otro peón en la misma columna, no puede
+         *        - Si puede moverse a donde está el rey rival, no puede
+         */
+        if(reingreso.getPieza() != null) {
+            return false;
+        }
+        
+        reingreso.setPieza(this);
+            
+        for (int i = 0; i < ParametrosPredefinidos.tablero.getCantidadFilas(); i++) {
+            for (int j = 0; j < ParametrosPredefinidos.tablero.getCantidadColumnas(); j++) {
+                Celda celda = ParametrosPredefinidos.tablero.getInstancia()[i][j];
+                if (celda.getPieza() != null && celda.getPieza().getJugador() != this.getJugador()) {
+                    if(celda.getPieza().puedeDarJaque(celda)) {
+                        reingreso.setPieza(null);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        reingreso.setPieza(null);
+        return true;
+    }
+    
+    public boolean puedeReingresarAAlgunaCelda() {
+        for (Celda[] instancia : ParametrosPredefinidos.tablero.getInstancia()) {
+            for (Celda celda : instancia) {
+                if(this.puedeReingresar(celda)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
 }
