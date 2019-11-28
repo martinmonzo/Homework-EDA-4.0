@@ -175,4 +175,25 @@ public abstract class Pieza {
         
         return false;
     }
+    
+    public void reingresar(Celda reingreso) {
+        reingreso.setPieza(this);
+        
+        ArrayList<Captura> listaCapturas = (this.getJugador() == ParametrosPredefinidos.jugador1) ?
+                ParametrosPredefinidos.listaCapturasJugador1 : ParametrosPredefinidos.listaCapturasJugador2;
+        
+        if(listaCapturas.size() > 0) {
+            for(int i = 0; i < listaCapturas.size(); i++) {
+                if(listaCapturas.get(i).getPieza() == this) {
+                    listaCapturas.remove(i);
+                }
+            }
+        }
+        
+        if(this.puedeDarJaque(reingreso)) {
+            Jugador rival = (this.jugador == ParametrosPredefinidos.jugador1) ?
+                    ParametrosPredefinidos.jugador2 : ParametrosPredefinidos.jugador1;
+            this.darJaque(rival);
+        }
+    }
 }
