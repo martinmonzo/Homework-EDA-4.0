@@ -25,5 +25,8 @@ public abstract class PiezaPromocionable extends Pieza {
         this.promocionada = promocionada;
     }
     
-    
+    public void promover() {
+        this.promocionada = true;
+        this.setNomenclatura("+" + this.nomenclatura);
+    }
 }
