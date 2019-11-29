@@ -17,5 +17,16 @@ public class Rey extends PiezaNoPromocionable {
         this.nomenclatura = "K" + this.nomenclatura;
     }
     
-    
+    @Override
+    public boolean puedeMoverse(Celda desde, Celda hasta, boolean checkearJaque) {
+        if(!super.puedeMoverse(desde, hasta, checkearJaque)) return false;
+        
+        /* el rey mueve en cualquier sentido, 1 celda, es decir, que la diferencia
+        tanto en fila como en columna debe ser menor o igual a 1*/
+        if(Math.abs(desde.getFila() - hasta.getFila()) > 1 || Math.abs(desde.getColumna() - hasta.getColumna()) > 1) {
+            return false;
+        }
+        
+        return true;
+    }
 }
