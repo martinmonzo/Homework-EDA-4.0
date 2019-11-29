@@ -29,5 +29,8 @@ public class Turno {
         Turno.jugador = jugador;
     }
     
-    
+    public static void incrementarTurno() {
+        nroTurno++;
+        jugador = (jugador == ParametrosPredefinidos.jugador1) ? ParametrosPredefinidos.jugador2 : ParametrosPredefinidos.jugador1;
+    }
 }
