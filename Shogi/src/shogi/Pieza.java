@@ -135,6 +135,37 @@ public abstract class Pieza {
         return false;
     }
     
+    public void moverse(Celda desde, Celda hasta) {
+        desde.setPieza(null);
+        
+        if(hasta.getPieza() != null) { //si hay pieza en el destino, la come
+            capturarPieza(hasta);
+        }
+        
+        if(this instanceof PiezaPromocionable) {
+            PiezaPromocionable _this = (PiezaPromocionable) this;
+            if(_this.debePromover(hasta)) {
+                _this.promover();
+            } else if(_this.puedePromover(hasta)) {
+                Scanner entrada = new Scanner(System.in);
+                System.out.print("¿Desea promover la pieza? (s/n): ");
+                String respuesta = entrada.nextLine();
+
+                if("S".equals(respuesta.toUpperCase())) {
+                    _this.promover();
+                }
+            }
+        }
+        
+        
+        hasta.setPieza(this);
+        if(this.puedeDarJaque(hasta)) {
+            Jugador rival = (this.jugador == ParametrosPredefinidos.jugador1) ?
+                    ParametrosPredefinidos.jugador2 : ParametrosPredefinidos.jugador1;
+            this.darJaque(rival);
+        }
+    }
+    
     public boolean puedeReingresar(Celda reingreso) {
         /* - Si la celda reingreso está ocupada, no puede
          *   - Si la celda esta vacía, y la pieza no es un peón, puede

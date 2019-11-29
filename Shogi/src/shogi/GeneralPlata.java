@@ -16,6 +16,11 @@ public class GeneralPlata extends PiezaPromocionable {
         this.nombre = "GeneralPlata";
         this.nomenclatura = "S" + this.nomenclatura;
     }
+
+    @Override
+    public boolean debePromover(Celda celda) {
+        return false;
+    }
     
     
 }

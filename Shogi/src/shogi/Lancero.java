@@ -16,6 +16,17 @@ public class Lancero extends PiezaPromocionable {
         this.nombre = "Lancero";
         this.nomenclatura = "L" + this.nomenclatura;
     }
+
+    /**
+     *
+     * @param celda
+     * @return
+     */
+    @Override
+    public boolean debePromover(Celda celda) {
+        return ((this.jugador.getSentidoAtaque() == 1 && celda.getFila() == 8) || 
+                (this.jugador.getSentidoAtaque() == -1 && celda.getFila() == 0) );
+    }
     
     
 }

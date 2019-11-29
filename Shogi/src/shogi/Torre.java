@@ -16,6 +16,11 @@ public class Torre extends PiezaPromocionable {
         this.nombre = "Torre";
         this.nomenclatura = "R" + this.nomenclatura;
     }
+
+    @Override
+    public boolean debePromover(Celda celda) {
+        return false;
+    }
     
     
 }

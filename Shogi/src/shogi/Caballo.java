@@ -16,6 +16,10 @@ public class Caballo extends PiezaPromocionable {
         this.nombre = "Caballo";
         this.nomenclatura = "N" + this.nomenclatura;
     }
-    
-    
+
+    @Override
+    public boolean debePromover(Celda celda) {
+        return ((this.jugador.getSentidoAtaque() == 1 && celda.getFila() >= 7) || 
+                (this.jugador.getSentidoAtaque() == -1 && celda.getFila() <= 1) );
+    }    
 }

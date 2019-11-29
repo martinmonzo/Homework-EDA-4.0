@@ -16,6 +16,11 @@ public class Alfil extends PiezaPromocionable {
         this.nombre = "Alfil";
         this.nomenclatura = "B" + this.nomenclatura;
     }
+
+    @Override
+    public boolean debePromover(Celda celda) {
+        return false;
+    }
     
     
 }

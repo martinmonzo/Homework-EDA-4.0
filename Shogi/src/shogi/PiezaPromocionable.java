@@ -25,6 +25,13 @@ public abstract class PiezaPromocionable extends Pieza {
         this.promocionada = promocionada;
     }
     
+    public boolean puedePromover(Celda celda) {
+        return (this.jugador.getSentidoAtaque() == 1 && celda.getFila() >= 6) ||
+                (this.jugador.getSentidoAtaque() == -1 && celda.getFila() <= 2);
+    }
+    
+    public abstract boolean debePromover(Celda celda);
+    
     public void promover() {
         this.promocionada = true;
         this.setNomenclatura("+" + this.nomenclatura);
