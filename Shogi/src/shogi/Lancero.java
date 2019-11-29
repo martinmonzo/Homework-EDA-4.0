@@ -64,5 +64,12 @@ public class Lancero extends PiezaPromocionable {
                 (this.jugador.getSentidoAtaque() == -1 && celda.getFila() == 0) );
     }
     
-    
+    @Override
+    public boolean puedeReingresar(Celda reingreso) {
+        if(!super.puedeReingresar(reingreso)) {
+            return false;
+        }
+        
+        return !this.debePromover(reingreso);
+    }
 }

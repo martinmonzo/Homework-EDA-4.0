@@ -47,5 +47,46 @@ public class Peon extends PiezaPromocionable {
                 (this.jugador.getSentidoAtaque() == -1 && celda.getFila() == 0) );
     }   
     
-       
+    /**
+     *
+     * @param reingreso
+     * @return
+     */
+    @Override
+    public boolean puedeReingresar(Celda reingreso) {
+        if(!super.puedeReingresar(reingreso)) {
+            return false;
+        }
+        
+        if(this.debePromover(reingreso)) {
+            return false;
+        }
+        
+        for (Celda[] instancia : ParametrosPredefinidos.tablero.getInstancia()) {
+            if (instancia[reingreso.getColumna()].getPieza() != null && instancia[reingreso.getColumna()].getPieza() instanceof Peon && instancia[reingreso.getColumna()].getPieza().getJugador() == this.getJugador()) {
+                return false;
+            }
+        }
+        
+        reingreso.setPieza(this); //ubico la pieza para probar si podría dar jaque mate y es un peon
+
+        for (Celda[] instancia : ParametrosPredefinidos.tablero.getInstancia()) {
+            for (Celda instancia1 : instancia) {
+                if (instancia1.getPieza() != null && instancia1.getPieza() instanceof Rey && instancia1.getPieza().getJugador() != this.getJugador()) {
+                    if(this.jugador.puedeDarJaqueMate()) {
+                        reingreso.setPieza(null);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        /*if(this.puedeMoverse(reingreso, celdaReyRival)) { //es peón y podría dar jaque mate
+            //CAMBIAR - JAQUE MATE EN VEZ DE JAQUE
+            reingreso.setPieza(null);
+            return false;
+        }*/
+        
+        return true;
+    }
 }

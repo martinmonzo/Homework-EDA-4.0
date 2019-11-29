@@ -45,5 +45,14 @@ public class Caballo extends PiezaPromocionable {
     public boolean debePromover(Celda celda) {
         return ((this.jugador.getSentidoAtaque() == 1 && celda.getFila() >= 7) || 
                 (this.jugador.getSentidoAtaque() == -1 && celda.getFila() <= 1) );
-    }    
+    }
+    
+    @Override
+    public boolean puedeReingresar(Celda reingreso) {
+        if(!super.puedeReingresar(reingreso)) {
+            return false;
+        }
+        
+        return !this.debePromover(reingreso);
+    }
 }
