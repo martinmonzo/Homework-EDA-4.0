@@ -196,4 +196,26 @@ public abstract class Pieza {
             this.darJaque(rival);
         }
     }
+    
+    public void capturarPieza(Celda hasta) {
+        Pieza pieza = hasta.getPieza();
+        pieza.setJugador(this.getJugador());
+        
+        if(pieza instanceof PiezaPromocionable) {
+            PiezaPromocionable _pieza = (PiezaPromocionable) pieza;
+            _pieza.quitarPromocion();
+        }
+        
+        if(pieza.nomenclatura.contains("↓")) {
+            pieza.setNomenclatura(pieza.nomenclatura.replace("↓", "↑"));
+        } else {
+            pieza.setNomenclatura(pieza.nomenclatura.replace("↑", "↓"));
+        }
+        
+        ArrayList<Captura> listaCapturas = (this.getJugador() == ParametrosPredefinidos.jugador1) ?
+                ParametrosPredefinidos.listaCapturasJugador1 : ParametrosPredefinidos.listaCapturasJugador2;
+        
+        listaCapturas.add(new Captura(pieza, this.getJugador()));
+        hasta.setPieza(this);
+    }
 }

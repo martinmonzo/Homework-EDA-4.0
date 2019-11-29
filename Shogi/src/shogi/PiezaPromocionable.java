@@ -29,4 +29,9 @@ public abstract class PiezaPromocionable extends Pieza {
         this.promocionada = true;
         this.setNomenclatura("+" + this.nomenclatura);
     }
+    
+    public void quitarPromocion() {
+        this.promocionada = false;
+        this.setNomenclatura(this.nomenclatura.replace("+", ""));
+    };
 }
